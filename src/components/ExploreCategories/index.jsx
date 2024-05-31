@@ -1,31 +1,37 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import "./styles.sass";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import { getMoviesByGenreId } from '../../services/apiService';
+import { UserContext } from '../../context/UserContext';
 
 const Generos = ({ genero }) => {
-
-  const moviesToShow = genero.movies.slice(0, 4);
-  const [genreData, setGenreData] = useState([])
+  const { globalUser } = useContext(UserContext);
+  const [genreData, setGenreData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleButtonClick = async () => {
-    setLoading(true);
-    try {
-      const genreResult = await getMoviesByGenreId(genero.id);
-      setGenreData(genreResult);
-      navigate(`/moviesbygenre/${genero.id}`, { state: { genreData: genreResult } });
-    } catch (error) {
-      console.log(error);
+    if (globalUser) {
+      setLoading(true);
+      try {
+        const genreResult = await getMoviesByGenreId(genero.id);
+        setGenreData(genreResult);
+        navigate(`/moviesbygenre/${genero.id}`, { state: { genreData: genreResult } });
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+    } else {
+      navigate('/login');
     }
-    setLoading(false);
   };
+
+  const moviesToShow = genero.movies.slice(0, 4);
 
   return (
     <>
-      <div className="border-solid border-2 bg-[#1A1A1A] border-neutral-700 rounded-lg w-full container__genres cursor-pointer" onClick={handleButtonClick}>
+      <div className="border-solid border-2 bg-[#1A1A1A] border-neutral-800 rounded-lg w-full container__genres cursor-pointer" onClick={handleButtonClick}>
         <div className="thumbnails-wrapper">
           <div className="thumbnails">
             {moviesToShow.length > 0 ? (
