@@ -2,17 +2,16 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../assets/icons/Logo.png';
 import { getGenres, getFaqs } from '../../services/apiService';
-import Generos from "../../components/ExploreCategories";
 import ExploreCategories from '../../components/ExploreCategories';
 import FrecuentlyQuestions from '../../components/FrecuentlyQuestions';
 import StreamingDevices from '../../components/StreamingDevices';
+import Slider from '../../components/Slider';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.sass'
+import './styles.sass';
 import { FaPlay } from 'react-icons/fa';
 import { UserContext } from '../../context/UserContext';
 
 import jsonDevices from "../../data/devices.json";
-import jsonGeneros from "../../data/generos.json";
 import jsonQuestions from "../../data/questions.json";
 
 const Home = () => {
@@ -53,7 +52,6 @@ const Home = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-
   return (
     <main className="Home px-5">
       <section className="containerHome">
@@ -90,10 +88,8 @@ const Home = () => {
             make you think, or a documentary to learn something new
           </p>
         </div>
-        <div className="grid grid-cols-2 mt-5 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-11">
-          {genres.map((genero, index) => (
-            <Generos genero={genero} key={index} />
-          ))}
+        <div className="" >
+          <Slider genres={genres} />
         </div>
       </section>
 
@@ -104,7 +100,7 @@ const Home = () => {
             With StreamVibe, you can enjoy your favorite movies and TV shows anytime, anywhere. Our platform is designed to be compatible with a wide range of devices, ensuring that you never miss a moment of entertainment.
           </p>
         </div>
-        <div className="grid grid-cols-2 xl:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-11">
+        <div className="grid grid-cols-1 xl:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 gap-x-4 gap-y-11">
           {jsonDevices.map((device, index) => (
             <StreamingDevices device={device} key={index} />
           ))}
@@ -127,7 +123,6 @@ const Home = () => {
           ))}
         </div>
       </section>
-
 
       <div className="bannerHome">
         <img
